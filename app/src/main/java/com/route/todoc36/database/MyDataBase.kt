@@ -1,29 +1,35 @@
 package com.route.todoc36.database
 
 import android.content.Context
-import android.graphics.BitmapFactory
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.route.todoc36.database.dao.TaskDao
 
-@Database(entities = [Task::class],version = 2,exportSchema = false)
-abstract class MyDataBase :RoomDatabase() {
-    abstract fun getTasksDao():TaskDao
 
-    companion object{
-        private var myDataBase:MyDataBase?=null
+@Database( entities = [Task::class] , version = 1 )
+@TypeConverters (DateConverter::class)
+abstract class MyDataBase : RoomDatabase() {
+
+    abstract fun getTasksDao() : TaskDao
+
+    companion object {
+        private val DATABASE_NAME = "Task-Data"
+        private var myDatabase:MyDataBase?=null
         fun getInstance(context:Context):MyDataBase{
-            if(myDataBase==null){
-                // create object
-                myDataBase = Room.databaseBuilder(
+            if(myDatabase==null){
+                myDatabase = Room.databaseBuilder(
                     context,MyDataBase::class.java,
-                    "tasks-database")
-                    .allowMainThreadQueries()
+                    DATABASE_NAME)
                     .fallbackToDestructiveMigration()
-                     .build();
+                    .allowMainThreadQueries()
+                    .build()
             }
-            return myDataBase!!;
+            return myDatabase!!
         }
     }
+
 }
+
+
