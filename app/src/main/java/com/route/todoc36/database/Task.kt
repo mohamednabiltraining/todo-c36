@@ -16,7 +16,8 @@ data class Task (
         @ColumnInfo
         var desc:String?=null,
         @ColumnInfo
-        var date:Long?=null,
+        var date:Date?=null,
         @ColumnInfo
         var isDone:Boolean?=null
         )
+

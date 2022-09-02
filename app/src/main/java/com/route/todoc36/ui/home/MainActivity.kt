@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.route.todoc36.R
+import com.route.todoc36.database.AddTaskBottomSheet
 import com.route.todoc36.database.MyDataBase
 import com.route.todoc36.database.Task
 import com.route.todoc36.databinding.ActivityMainBinding
@@ -17,15 +18,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
+        viewBinding.addButton.setOnClickListener{
+            showAddBottomSheet()
+        }
         viewBinding.bottomNavigationView.setOnItemSelectedListener{
             val id  = it.itemId;
             when(id){
-                R.id.navigation_tasks_list ->{
+                R.id.navigation_tasks_list ->
                     showFragment(ListTasksFragment())
-               }
-                R.id.navigation_settings->{
+
+                R.id.navigation_settings->
                     showFragment(SettingsFragment())
-                }
+
             }
             true
 //            return@setOnItemSelectedListener
@@ -33,7 +37,12 @@ class MainActivity : AppCompatActivity() {
         viewBinding.bottomNavigationView.selectedItemId = R.id.navigation_tasks_list
     }
 
-    fun showFragment(fragment:Fragment){
+    private fun showAddBottomSheet() {
+        val addBottomSheet = AddTaskBottomSheet()
+        addBottomSheet.show(supportFragmentManager,"")
+    }
+
+    private fun showFragment(fragment:Fragment){
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container,fragment)
